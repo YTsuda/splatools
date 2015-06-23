@@ -72,6 +72,9 @@ var SplatoolsApp = React.createClass({
           </tr>
           {rows}
         </tbody></table>
+        <footer>
+          <p className="side-margin">ご意見は <a target="_blank" href="https://twitter.com/splatools">@splatools</a> まで</p>
+        </footer>
       </div>
     );
   }
