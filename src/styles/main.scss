@@ -1,0 +1,88 @@
+/* Stiziles */
+
+html, body {
+  background: #F5F5F5;
+  font-size: 12px;
+}
+
+/* main */
+
+.main {
+  width: 100%;
+  height: 100%;
+  background: #FFFFFF;
+  color: #212121;
+  overflow: hidden;
+}
+
+.main img {
+  width: 103px;
+  height: 89px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* transitions */
+
+.fade-enter {
+  opacity: 0.01;
+  transition: opacity .5s ease-in;
+}
+
+.fade-enter.fade-enter-active {
+  opacity: 1;
+}
+
+.fade-leave {
+  opacity: 1;
+  transition: opacity .5s ease-in;
+}
+
+.fade-leave.fade-leave-active {
+  opacity: 0.01;
+}
+
+.cloth-table {
+  border-collapse: collapse;
+  td, th{
+    padding: 10px 12px 10px 0px;
+    text-align: left;
+    border-bottom: 1px solid #ECECEC;
+    line-height: 140%;
+    font-size: 11px;
+    p{
+      margin: 0px;
+    }
+  }
+  tr td, tr th{
+    &:last-child{
+      padding-right: 10px;
+    }
+    &:first-child{
+      padding-left: 10px;
+    }
+  }
+  td.main-gear, td.sub-gear{
+    color: #666666;
+  }
+  th {
+    color: #888888;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+  p.part{
+    color: #AAAAAA;
+    span.stars{
+      font-size: 10px;
+    }
+  }
+  p.name{
+    font-size: 13px;
+    line-height: 130%;
+    margin-bottom: 2px;
+  }
+}
+.refiner {
+  padding: 10px;
+  margin: 10px 0px;
+}
