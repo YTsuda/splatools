@@ -59,6 +59,8 @@ var SplatoolsApp = React.createClass({
     }
     return (
       <div className='main'>
+        <h1 className='side-margin'>スプラトゥーンのそうび/ギア対応表</h1>
+        <p className='side-margin'>そうび（アタマ、フク、クツ）とメインギア、サブにつきやすいギアの対応表です。サブにつきやすいギアはブランドごとに設定されているようです。</p>
         <form className="refiner" name="search">
           <select name="main_gear" value={this.state.selected_main_gear} onChange={this._onChangeMainGear}>{options}</select>
         </form>
