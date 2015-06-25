@@ -2,7 +2,17 @@
 
 var React = require('react/addons');
 var ReactTransitionGroup = React.addons.TransitionGroup;
+
+var injectTapEventPlugin = require("react-tap-event-plugin");
+injectTapEventPlugin();
+
 var _ = require('underscore');
+
+var mui = require('material-ui');
+var ThemeManager = new mui.Styles.ThemeManager();
+var DropDownMenu = mui.DropDownMenu;
+var Toolbar = mui.Toolbar;
+var ToolbarGroup = mui.ToolbarGroup;
 
 
 // CSS
@@ -29,13 +39,25 @@ function getClothState() {
 
 var SplatoolsApp = React.createClass({
 
+  // material design theme
+  childContextTypes: {
+    muiTheme: React.PropTypes.object
+  },
+  getChildContext: function() {
+    return {
+      muiTheme: ThemeManager.getCurrentTheme()
+    };
+  },
+
+  // initial state
   getInitialState: function(){
     return getClothState();
   },
+
+  // listen store
   componentDidMount: function() {
     Cloth.addChangeListener(this._onClothStoreChange);
   },
-
   componentWillUnmount: function() {
     Cloth.removeChangeListener(this._onClothStoreChange);
   },
@@ -43,6 +65,7 @@ var SplatoolsApp = React.createClass({
     var clothes = Cloth.getAllWithBrandEffect();
     this.setState({all_clothes: clothes});
   },
+
   // to action creator
   _onChangeMainGear: function (e) {
     var query = {selected_main_gear: e.target.value};
@@ -94,14 +117,29 @@ var SplatoolsApp = React.createClass({
       return <option value={part}>{Cloth.getPartLabel(part)}</option>;
     }));
 
+    var gear_items = [{payload: null, text: '(メインギアを選ぶ)'}];
+    gear_items = gear_items.concat(this.state.gears.map(function(row){
+      return {payload: row[0], text: row[1]};
+    }));
+
+    var part_items = [{payload: null, text: '(部位を選ぶ)'}];
+    part_items = part_items.concat(this.state.parts.map(function(part){
+      return {payload: part, text: Cloth.getPartLabel(part)};
+    }));
+    /*
+    var onChangeDropDown = function(){
+      console.log('mos');
+    };
+     <select name="main_gear" value={this.state.selected_main_gear} onChange={this._onChangeMainGear}>{gear_options}</select>
+     <select name="part" value={this.state.selected_part} onChange={this._onChangePart}>{part_options}</select>
+    */
+
     return (
       <div className='main'>
         <h1 className='side-margin'>スプラトゥーンのそうび/ギア対応表</h1>
         <p className='side-margin'>そうび（アタマ、フク、クツ）とメインギア、サブにつきやすいギアの対応表です。サブにつきやすいギアはブランドごとに設定されているようです。</p>
-        <form className="filters" name="search">
-          <select name="main_gear" value={this.state.selected_main_gear} onChange={this._onChangeMainGear}>{gear_options}</select>
-          <select name="part" value={this.state.selected_part} onChange={this._onChangePart}>{part_options}</select>
-        </form>
+        <div><span>メインギア</span><DropDownMenu menuItems={gear_items} /></div>
+        <div><span>部位を選ぶ</span><DropDownMenu menuItems={part_items} /></div>
         <table className="cloth-table"><tbody>
           <tr>
             <th>名前</th>
