@@ -2,13 +2,29 @@
 var SplatoolsAppDispatcher = require('../dispatcher/SplatoolsAppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
+var _ = require('underscore');
 
 // Stores
 var Brand = require('../stores/Brand');
 var Gear = require('../stores/Gear');
 
+// Constant
+var SplatoolsConstant = require('../constants/SplatoolsConstant');
+
+var CHANGE_EVENT = 'change';
+
+var NAME_INDEX = 1;
+var PART_INDEX = 2;
+var MAIN_GEAR_ID_INDEX = 3;
+var RARE_INDEX = 4;
+var BRAND_ID_INDEX = 5;
+
+var PART_BODY = 'body';
+var PART_HEAD = 'head';
+var PART_FOOT = 'foot';
+
 // id, name, part, gear_id, rare, brand_id
-var _clothes = [
+var _master = [
     ["1","わかばイカT","body","10","1","1"],
     ["2","イカホワイト","body","4","1","1"],
     ["3","イカノメT ブラック","body","6","1","11"],
@@ -181,12 +197,36 @@ var _clothes = [
     ["170","モトクロス ソリッドブルー","foot","23","3","4"]
 ];
 
+var _clothes = {};
+
+function initialize(){
+    _clothes = _.clone(_master);
+}
+initialize();
+
+function filterByMainGear(main_gear_id) {
+    if(!main_gear_id){
+        return;
+    }
+    _clothes = _clothes.filter(function(row) {
+        return row[MAIN_GEAR_ID_INDEX] === main_gear_id;
+    });
+}
+function filterByPart(part) {
+    if(!part){
+        return;
+    }
+    _clothes = _clothes.filter(function(row) {
+        return row[PART_INDEX] === part;
+    });
+}
+function filter (query) {
+    initialize();
+    filterByMainGear(query.selected_main_gear);
+    filterByPart(query.selected_part);
+}
+
 var Cloth = assign({}, EventEmitter.prototype, {
-    NAME_INDEX: 1,
-    PART_INDEX: 2,
-    MAIN_GEAR_ID_INDEX: 3,
-    RARE_INDEX: 4,
-    BRAND_ID_INDEX: 5,
     /**
      * Get the entire collection of Cloth.
      * @return {object}
@@ -199,41 +239,58 @@ var Cloth = assign({}, EventEmitter.prototype, {
         var gear_dict = Gear.getNameHash();
         var res = [];
         for ( var i in _clothes ){
-            var main_gear_id = _clothes[i][this.MAIN_GEAR_ID_INDEX];
-            if (options.main_gear_id && options.main_gear_id !== main_gear_id){
-                continue;
-            }
-            var brand_id = _clothes[i][this.BRAND_ID_INDEX];
+            var main_gear_id = _clothes[i][MAIN_GEAR_ID_INDEX];
+            var brand_id = _clothes[i][BRAND_ID_INDEX];
             var sub_effect = "";
             if (brand_id.length > 0) {
                 sub_effect = gear_dict[brand_dict[brand_id][2]];
             }
             res.push({
-                'name': _clothes[i][this.NAME_INDEX],
-                'rare': _clothes[i][this.RARE_INDEX],
-                'part': this.getPartLabel(_clothes[i][this.PART_INDEX]),
+                'name': _clothes[i][NAME_INDEX],
+                'rare': _clothes[i][RARE_INDEX],
+                'part': this.getPartLabel(_clothes[i][PART_INDEX]),
                 'main_gear': gear_dict[main_gear_id],
                 'sub_gear': sub_effect
             });
         }
         return res;
     },
+    getParts: function(){
+        return [PART_HEAD, PART_BODY, PART_FOOT];
+    },
     getPartLabel: function(part){
         switch (part){
-            case 'body':
-                return 'フク';
-            case 'head':
+            case PART_HEAD:
                 return 'アタマ';
-            case 'foot':
+            case PART_BODY:
+                return 'フク';
+            case PART_FOOT:
                 return 'クツ';
         }
         return null;
+    },
+    emitChange: function() {
+        this.emit(CHANGE_EVENT);
+    },
+    addChangeListener: function(callback) {
+        this.on(CHANGE_EVENT, callback);
+    },
+    removeChangeListener: function(callback) {
+        this.removeListener(CHANGE_EVENT, callback);
     }
 });
 
 // Register callback to handle all updates
 SplatoolsAppDispatcher.register(function(action) {
     switch(action.actionType) {
+        case SplatoolsConstant.ACTION_UPDATE_CLOTH_FILTER:
+            filter(action.query);
+            console.log(_clothes);
+            Cloth.emitChange();
+            break;
+
+        default:
+            // noop
     }
 });
 
