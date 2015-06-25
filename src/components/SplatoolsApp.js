@@ -104,7 +104,7 @@ var SplatoolsApp = React.createClass({
       );
     }
     var gear_options = [];
-    gear_options.push(<option value="">メインギアを選ぶ</option>);
+    gear_options.push(<option value="">すべてのメインギア</option>);
     for (var j in this.state.gears) {
       gear_options.push(
             <option value={this.state.gears[j][0]}>{this.state.gears[j][1]}</option>
@@ -112,34 +112,19 @@ var SplatoolsApp = React.createClass({
     }
 
     var part_options = [];
-    part_options.push(<option value="">部位を選ぶ</option>);
+    part_options.push(<option value="">すべての部位</option>);
     part_options.push(this.state.parts.map(function(part){
       return <option value={part}>{Cloth.getPartLabel(part)}</option>;
     }));
-
-    var gear_items = [{payload: null, text: '(メインギアを選ぶ)'}];
-    gear_items = gear_items.concat(this.state.gears.map(function(row){
-      return {payload: row[0], text: row[1]};
-    }));
-
-    var part_items = [{payload: null, text: '(部位を選ぶ)'}];
-    part_items = part_items.concat(this.state.parts.map(function(part){
-      return {payload: part, text: Cloth.getPartLabel(part)};
-    }));
-    /*
-    var onChangeDropDown = function(){
-      console.log('mos');
-    };
-     <select name="main_gear" value={this.state.selected_main_gear} onChange={this._onChangeMainGear}>{gear_options}</select>
-     <select name="part" value={this.state.selected_part} onChange={this._onChangePart}>{part_options}</select>
-    */
 
     return (
       <div className='main'>
         <h1 className='side-margin'>スプラトゥーンのそうび/ギア対応表</h1>
         <p className='side-margin'>そうび（アタマ、フク、クツ）とメインギア、サブにつきやすいギアの対応表です。サブにつきやすいギアはブランドごとに設定されているようです。</p>
-        <div><span>メインギア</span><DropDownMenu menuItems={gear_items} /></div>
-        <div><span>部位を選ぶ</span><DropDownMenu menuItems={part_items} /></div>
+        <form className="filters">
+          <select name="main_gear" value={this.state.selected_main_gear} onChange={this._onChangeMainGear}>{gear_options}</select>
+          <select name="part" value={this.state.selected_part} onChange={this._onChangePart}>{part_options}</select>
+        </form>
         <table className="cloth-table"><tbody>
           <tr>
             <th>名前</th>

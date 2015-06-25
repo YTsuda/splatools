@@ -1,5 +1,7 @@
 /* Stiziles */
 
+$text_color: #212121;
+
 html, body {
   background: #F5F5F5;
   font-size: 12px;
@@ -92,4 +94,17 @@ html, body {
 .filters {
   padding: 10px;
   margin: 10px 0px;
+  select{
+    height: 45px;
+    font-size: 100%;
+    color: $text_color;
+
+    padding: 12px 12px 12px 12px;
+    margin-right: 10px;
+    border: 1px solid #B3B3B3;
+
+    &:last-child{
+      margin-right: 0px;
+    }
+  }
 }
