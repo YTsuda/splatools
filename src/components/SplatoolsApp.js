@@ -92,15 +92,29 @@ var SplatoolsApp = React.createClass({
       for (var k = 0; k < cl.rare; k++ ) {
         rare_stars += '★';
       }
+      var cloth_image_url = '';
+      if (cl.has_image == "1") {
+        cloth_image_url = "/images/clothes/" + cl.id + ".jpg";
+      }else{
+        cloth_image_url = "/images/clothes/no_image.jpg";
+      }
+      var sub_gear_img = '';
+      if (cl.sub_gear_id) {
+        sub_gear_img = <img src={"/images/gears/" + cl.sub_gear_id + ".jpg"} alt={cl.sub_gear} />
+      }
       rows.push(
-          <tr>
-            <td>
-              <p className="name">{cl.name}</p>
-              <p className="part">{cl.part}<span className="stars">{rare_stars}</span></p>
-            </td>
-            <td className="main-gear">{cl.main_gear}</td>
-            <td className="sub-gear">{cl.sub_gear}</td>
-          </tr>
+          <li>
+            <div className="photo"><img src={cloth_image_url} alt={cl.name} /></div>
+            <div className="main">
+              <p className="name">{cl.name}<span className="part">{cl.part}</span></p>
+              <div className="gears">
+                <div className="main-gear">
+                  <img src={"/images/gears/" + cl.main_gear_id + ".jpg"} alt={cl.main_gear} />
+                </div>
+                <div className="sub-gear">{sub_gear_img} {sub_gear_img} {sub_gear_img}</div>
+              </div>
+            </div>
+          </li>
       );
     }
     var gear_options = [];
@@ -120,19 +134,12 @@ var SplatoolsApp = React.createClass({
     return (
       <div className='main'>
         <h1 className='side-margin'>スプラトゥーンのそうび/ギア対応表</h1>
-        <p className='side-margin'>そうび（アタマ、フク、クツ）とメインギア、サブにつきやすいギアの対応表です。サブにつきやすいギアはブランドごとに設定されているようです。</p>
+        <p className='side-margin'>そうび（アタマ、フク、クツ）とメインギア、サブにつきやすいギアの対応表です。</p>
         <form className="filters">
           <select name="main_gear" value={this.state.selected_main_gear} onChange={this._onChangeMainGear}>{gear_options}</select>
           <select name="part" value={this.state.selected_part} onChange={this._onChangePart}>{part_options}</select>
         </form>
-        <table className="cloth-table"><tbody>
-          <tr>
-            <th>名前</th>
-            <th>メインギア</th>
-            <th>サブにつきやすいギア</th>
-          </tr>
-          {rows}
-        </tbody></table>
+        <ul className="cloth-list side-margin">{rows}</ul>
         <footer>
           <p className="side-margin">ご意見は <a target="_blank" href="https://twitter.com/splatools">@splatools</a> まで</p>
         </footer>
