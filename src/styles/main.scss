@@ -58,17 +58,24 @@ h1.page-title{
       float: left;
     }
     .photo{
+      position:relative;
       $photo_size: 53px;
       width: $photo_size;
       height: $photo_size;
       border-radius: 5px;
-
       margin-right: 12px;
       overflow: hidden;
       img {
         height: $photo_size;
         width: auto;
         margin-left : 0px;
+      }
+      .part{
+        position:absolute;
+        width: $photo_size;
+        top: 18px;
+        text-align: center;
+        color: #FFFFFF;
       }
     }
     .main{
@@ -115,6 +122,8 @@ h1.page-title{
   }
 }
 header.filters {
+  position: relative;
+  z-index: 10000;
   background-color: #FFFFFF;
   padding: 10px;
   margin-bottom: 15px;
@@ -144,4 +153,7 @@ header.filters {
     text-decoration: none;
     line-height: 130%;
   }
+}
+.sticky{
+  z-index: 100;
 }

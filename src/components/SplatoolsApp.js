@@ -96,10 +96,12 @@ var SplatoolsApp = React.createClass({
         rare_stars += '★';
       }
       var cloth_image_url = '';
+      var part_display = '';
       if (cl.has_image === "1") {
         cloth_image_url = "/images/clothes/" + cl.id + ".jpg";
       }else{
         cloth_image_url = "/images/clothes/no_image.jpg";
+        part_display = <div className="part">{cl.part}</div>;
       }
       var sub_gear_img = '';
       if (cl.sub_gear_id) {
@@ -107,9 +109,9 @@ var SplatoolsApp = React.createClass({
       }
       rows.push(
           <li>
-            <div className="photo"><img src={cloth_image_url} alt={cl.name} /></div>
+            <div className="photo"><img src={cloth_image_url} alt={cl.name} />{part_display}</div>
             <div className="main">
-              <p className="name">{cl.name}<span className="part">{cl.part}</span></p>
+              <p className="name">{cl.name}</p>
               <div className="gears">
                 <div className="main-gear">
                   <img src={"/images/gears/" + cl.main_gear_id + ".jpg"} alt={cl.main_gear} />
