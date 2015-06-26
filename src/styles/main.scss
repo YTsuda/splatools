@@ -119,13 +119,16 @@ header.filters {
   padding: 10px;
   margin-bottom: 15px;
   border-bottom: #EEEEEE 1px solid;
+  overflow: hidden;
   select{
-    max-width: 140px;
+    display: block;
+    float: left;
+    max-width: 150px;
     height: 45px;
     font-size: 100%;
     color: $text_color;
 
-    padding: 12px 12px 12px 12px;
+    padding: 10px 5px;
     margin-right: 10px;
     background-color: #FBFBFB;
     border: 1px solid #CCCCCC;
@@ -136,7 +139,7 @@ header.filters {
   }
   .to-gear-description{
     display: block;
-    float: right;
+    float: left;
     margin-top: 8px;
     text-decoration: none;
     line-height: 130%;
