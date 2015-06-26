@@ -43,6 +43,10 @@ html, body {
   opacity: 0.01;
 }
 
+h1.page-title{
+  font-size: 20px;
+}
+
 .cloth-list {
   list-style: none;
   padding: 0px;
@@ -54,7 +58,7 @@ html, body {
       float: left;
     }
     .photo{
-      $photo_size: 54px;
+      $photo_size: 53px;
       width: $photo_size;
       height: $photo_size;
       border-radius: 5px;
@@ -107,22 +111,16 @@ html, body {
         }
       }
     }
-
     overflow: hidden;
   }
-  td.main-gear, td.sub-gear{
-    color: #666666;
-  }
-  th {
-    color: #888888;
-    padding-top: 5px;
-    padding-bottom: 5px;
-  }
 }
-.filters {
+header.filters {
+  background-color: #FFFFFF;
   padding: 10px;
-  margin: 10px 0px;
+  margin-bottom: 15px;
+  border-bottom: #EEEEEE 1px solid;
   select{
+    max-width: 140px;
     height: 45px;
     font-size: 100%;
     color: $text_color;
@@ -135,5 +133,12 @@ html, body {
     &:last-child{
       margin-right: 0px;
     }
+  }
+  .to-gear-description{
+    display: block;
+    float: right;
+    margin-top: 8px;
+    text-decoration: none;
+    line-height: 130%;
   }
 }

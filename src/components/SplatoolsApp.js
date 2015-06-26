@@ -3,10 +3,11 @@
 var React = require('react/addons');
 var ReactTransitionGroup = React.addons.TransitionGroup;
 
+var _ = require('underscore');
+
+// material-ui
 var injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
-
-var _ = require('underscore');
 
 var mui = require('material-ui');
 var ThemeManager = new mui.Styles.ThemeManager();
@@ -14,6 +15,8 @@ var DropDownMenu = mui.DropDownMenu;
 var Toolbar = mui.Toolbar;
 var ToolbarGroup = mui.ToolbarGroup;
 
+// stickey header
+var Sticky = require('react-sticky');
 
 // CSS
 //require("bootstrap-webpack");
@@ -93,14 +96,14 @@ var SplatoolsApp = React.createClass({
         rare_stars += '★';
       }
       var cloth_image_url = '';
-      if (cl.has_image == "1") {
+      if (cl.has_image === "1") {
         cloth_image_url = "/images/clothes/" + cl.id + ".jpg";
       }else{
         cloth_image_url = "/images/clothes/no_image.jpg";
       }
       var sub_gear_img = '';
       if (cl.sub_gear_id) {
-        sub_gear_img = <img src={"/images/gears/" + cl.sub_gear_id + ".jpg"} alt={cl.sub_gear} />
+        sub_gear_img = <img src={"/images/gears/" + cl.sub_gear_id + ".jpg"} alt={cl.sub_gear} />;
       }
       rows.push(
           <li>
@@ -133,12 +136,17 @@ var SplatoolsApp = React.createClass({
 
     return (
       <div className='main'>
-        <h1 className='side-margin'>スプラトゥーンのそうび/ギア対応表</h1>
-        <p className='side-margin'>そうび（アタマ、フク、クツ）とメインギア、サブにつきやすいギアの対応表です。</p>
-        <form className="filters">
-          <select name="main_gear" value={this.state.selected_main_gear} onChange={this._onChangeMainGear}>{gear_options}</select>
-          <select name="part" value={this.state.selected_part} onChange={this._onChangePart}>{part_options}</select>
-        </form>
+        <h1 className='side-margin page-title'>スプラトゥーンのそうび/ギア対応表</h1>
+        <p className='side-margin'>そうび（アタマ、フク、クツ）とメインギア、サブスロットに出やすいギアの対応表です。</p>
+        <Sticky>
+          <header className="filters">
+            <form>
+              <select name="main_gear" value={this.state.selected_main_gear} onChange={this._onChangeMainGear}>{gear_options}</select>
+              <select name="part" value={this.state.selected_part} onChange={this._onChangePart}>{part_options}</select>
+              <a className="to-gear-description" target="_blank" href="http://wikiwiki.jp/splatoon2ch/?%A5%AE%A5%A2%A5%D1%A5%EF%A1%BC">ギア<br />説明</a>
+            </form>
+          </header>
+        </Sticky>
         <ul className="cloth-list side-margin">{rows}</ul>
         <footer>
           <p className="side-margin">ご意見は <a target="_blank" href="https://twitter.com/splatools">@splatools</a> まで</p>
