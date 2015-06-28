@@ -4,16 +4,19 @@ var React = require('react/addons');
 var ReactTransitionGroup = React.addons.TransitionGroup;
 
 var _ = require('underscore');
+require('lazysizes');
 
 // material-ui
 var injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
 
+// Material UI
 var mui = require('material-ui');
 var ThemeManager = new mui.Styles.ThemeManager();
 var DropDownMenu = mui.DropDownMenu;
 var Toolbar = mui.Toolbar;
 var ToolbarGroup = mui.ToolbarGroup;
+
 
 // stickey header
 var Sticky = require('react-sticky');
@@ -109,12 +112,12 @@ var SplatoolsApp = React.createClass({
       }
       rows.push(
           <li>
-            <div className="photo"><img src={cloth_image_url} alt={cl.name} />{part_display}</div>
+            <div className="photo"><img className="lazyload" src="/images/clothes/no_image.jpg" data-src={cloth_image_url} alt={cl.name} />{part_display}</div>
             <div className="main">
               <p className="name">{cl.name}</p>
               <div className="gears">
                 <div className="main-gear">
-                  <img src={"/images/gears/" + cl.main_gear_id + ".jpg"} alt={cl.main_gear} />
+                  <img className="lazyload" src={"/images/gears/" + cl.main_gear_id + ".jpg"} alt={cl.main_gear} />
                 </div>
                 <div className="sub-gear">{sub_gear_img} {sub_gear_img} {sub_gear_img}</div>
               </div>
