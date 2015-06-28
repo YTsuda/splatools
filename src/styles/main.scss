@@ -59,7 +59,7 @@ h1.page-title{
     }
     .photo{
       position:relative;
-      $photo_size: 56px;
+      $photo_size: 55px;
       width: $photo_size;
       height: $photo_size;
       border-radius: 5px;
@@ -98,18 +98,17 @@ h1.page-title{
       div.gears{
         margin-top: 7px;
         .main-gear, .sub-gear{
-          height: 30px;
           background-color: #000000;
-          border-radius: 4px;
-          height: 30px;
+          border-radius: 3px;
+          height: 28px;
           float: left;
-          opacity: .75;
+          opacity: .7;
         }
         .main-gear{
           margin-right: 7px;
           img{
             margin: 2px;
-            height : 26px;
+            height : 24px;
             border-radius: 3px;
             width : auto;
           }
@@ -121,15 +120,15 @@ h1.page-title{
             float: left;
             line-height: 90%;
             font-size: 8px;
-            padding: 2px 1px 2px 2px;
+            padding: 2px 2px 1px 2px;
           }
           img{
             display: block;
             float: left;
-            height : 26px;
+            height : 24px;
             width : auto;
-            margin-right: 0px;
-            margin-top: 1px;
+            margin-right: 2px;
+            margin-top: 2px;
           }
         }
       }
