@@ -119,7 +119,7 @@ var SplatoolsApp = React.createClass({
                 <div className="main-gear">
                   <img className="lazyload" src={"/images/gears/" + cl.main_gear_id + ".jpg"} alt={cl.main_gear} />
                 </div>
-                <div className="sub-gear">{sub_gear_img} {sub_gear_img} {sub_gear_img}</div>
+                <div className="sub-gear"><span>出やすい<br />サブギア</span>{sub_gear_img}</div>
               </div>
             </div>
           </li>
