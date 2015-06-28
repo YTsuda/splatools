@@ -293,7 +293,6 @@ SplatoolsAppDispatcher.register(function(action) {
     switch(action.actionType) {
         case SplatoolsConstant.ACTION_UPDATE_CLOTH_FILTER:
             filter(action.query);
-            console.log(_clothes);
             Cloth.emitChange();
             break;
 

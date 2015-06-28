@@ -6,13 +6,14 @@ var ReactTransitionGroup = React.addons.TransitionGroup;
 var SplatoolsConstant = require('../constants/SplatoolsConstant');
 
 var _ = require('underscore');
-require('lazysizes');
 
 // Modal
 var Modal = require('react-modal');
 Modal.setAppElement(document.getElementById(SplatoolsConstant.APP_ELEMENT_ID));
 Modal.injectCSS();
 
+// lazy sizes
+var LazySizes = require('react-lazysizes');
 
 // stickey header
 var Sticky = require('react-sticky');
@@ -107,7 +108,7 @@ var SplatoolsApp = React.createClass({
 
       rows.push(
           <li>
-            <div className="photo"><img className="lazyload" src="/images/clothes/no_image.jpg" data-src={cloth_image_url} alt={cl.name} />{part_name}</div>
+            <div className="photo"><LazySizes dataSrc={cloth_image_url} />{part_name}</div>
             <div className="main">
               <p className="name">{cl.name}</p>
               <div className="gears">
