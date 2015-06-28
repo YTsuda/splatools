@@ -3,12 +3,16 @@
 var React = require('react/addons');
 var ReactTransitionGroup = React.addons.TransitionGroup;
 
+var SplatoolsConstant = require('../constants/SplatoolsConstant');
+
 var _ = require('underscore');
 require('lazysizes');
 
-// material-ui
-var injectTapEventPlugin = require("react-tap-event-plugin");
-injectTapEventPlugin();
+// Modal
+var Modal = require('react-modal');
+Modal.setAppElement(document.getElementById(SplatoolsConstant.APP_ELEMENT_ID));
+Modal.injectCSS();
+
 
 // stickey header
 var Sticky = require('react-sticky');
@@ -31,7 +35,8 @@ function getClothState() {
     'gears': Gear.getAll(),
     'parts': Cloth.getParts(),
     'selected_main_gear': null,
-    'selected_part': null
+    'selected_part': null,
+    'helpIsOpen': false
   };
 }
 
@@ -47,6 +52,14 @@ var SplatoolsApp = React.createClass({
   },
   componentWillUnmount: function() {
     Cloth.removeChangeListener(this._onClothStoreChange);
+  },
+  openHelp: function(e){
+    e.preventDefault();
+    this.setState({'helpIsOpen': true});
+  },
+  closeHelp: function(e){
+    e.preventDefault();
+    this.setState({'helpIsOpen': false});
   },
   _onClothStoreChange: function(){
     var clothes = Cloth.getAllWithBrandEffect();
@@ -75,53 +88,57 @@ var SplatoolsApp = React.createClass({
     var rows = [];
     for (var i in this.state.all_clothes) {
       var cl = this.state.all_clothes[i];
-      var rare_stars = "";
-      for (var k = 0; k < cl.rare; k++ ) {
-        rare_stars += '★';
-      }
+
+      // そうびの画像部分
       var cloth_image_url = '';
-      var part_display = '';
+      var part_name = '';
       if (cl.has_image === "1") {
         cloth_image_url = "/images/clothes/" + cl.id + ".jpg";
       }else{
         cloth_image_url = "/images/clothes/no_image.jpg";
-        part_display = <div className="part">{cl.part}</div>;
+        part_name = <div className="part">{cl.part}</div>;
       }
-      var sub_gear_img = '';
+
+      // つきやすいサブギア
+      var sub_gear = '';
       if (cl.sub_gear_id) {
-        sub_gear_img = <img src={"/images/gears/" + cl.sub_gear_id + ".jpg"} alt={cl.sub_gear} />;
+        sub_gear = <div className="sub-gear"><span>出やすい<br />サブギア</span><i className={"gear gear-half gear-half-" + cl.sub_gear_id}></i></div>;
       }
+
       rows.push(
           <li>
-            <div className="photo"><img className="lazyload" src="/images/clothes/no_image.jpg" data-src={cloth_image_url} alt={cl.name} />{part_display}</div>
+            <div className="photo"><img className="lazyload" src="/images/clothes/no_image.jpg" data-src={cloth_image_url} alt={cl.name} />{part_name}</div>
             <div className="main">
               <p className="name">{cl.name}</p>
               <div className="gears">
                 <div className="main-gear">
-                  <img className="lazyload" src={"/images/gears/" + cl.main_gear_id + ".jpg"} alt={cl.main_gear} />
-                </div>
-                <div className="sub-gear"><span>出やすい<br />サブギア</span>{sub_gear_img}</div>
+                  <i className={"gear gear-half gear-half-" + cl.main_gear_id}></i>
+                </div>{sub_gear}
               </div>
             </div>
           </li>
       );
     }
+
+    // ヘッダの絞り込みパート
     var gear_options = [];
     gear_options.push(<option value="">すべてのメインギア</option>);
-    for (var j in this.state.gears) {
-      gear_options.push(
-            <option value={this.state.gears[j][0]}>{this.state.gears[j][1]}</option>
-      );
-    }
-
+    _.each(this.state.gears, function(g) {
+      gear_options.push( <option value={g.id}>{g.name}</option> );
+    });
     var part_options = [];
     part_options.push(<option value="">すべての部位</option>);
     part_options.push(this.state.parts.map(function(part){
       return <option value={part}>{Cloth.getPartLabel(part)}</option>;
     }));
-    var standardActions = [
-      { text: 'Okay' }
-    ];
+
+    //ギア解説
+    var gear_descriptions = this.state.gears.map(function(g){
+      return <tr>
+        <td><i className={"gear gear-half gear-half-" + g.id}></i></td>
+        <td>{g.name}</td>
+      </tr>;
+    });
 
     return (
       <div className='main'>
@@ -132,11 +149,15 @@ var SplatoolsApp = React.createClass({
             <form>
               <select name="main_gear" value={this.state.selected_main_gear} onChange={this._onChangeMainGear}>{gear_options}</select>
               <select name="part" value={this.state.selected_part} onChange={this._onChangePart}>{part_options}</select>
-              <a className="to-gear-description" target="_blank" href="http://wikiwiki.jp/splatoon2ch/?%A5%AE%A5%A2%A5%D1%A5%EF%A1%BC">ギア<br />説明</a>
+              <button className="to-gear-description" onClick={this.openHelp}>ギア<br />説明</button>
             </form>
           </header>
         </Sticky>
         <ul className="cloth-list side-margin">{rows}</ul>
+        <Modal isOpen={this.state.helpIsOpen} onRequestClose={this.closeHelp}>
+          <button className="close-modal" onClick={this.closeHelp}>X 閉じる</button>
+          <table className="gear-descriptions"><tbody>{gear_descriptions}</tbody></table>
+        </Modal>
         <footer>
           <p className="side-margin">ご意見は <a target="_blank" href="https://twitter.com/splatools">@splatools</a> まで</p>
         </footer>

@@ -2,9 +2,58 @@
 
 $text_color: #212121;
 
+
+// gearIcons
+.gear {
+  background-image: url("/images/gears.jpg");
+  background-repeat: no-repeat;
+  display: block;
+  width: 48px;
+  height: 48px;
+  &.gear-half{
+    background-size: 24px 576px;
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@mixin gear($id){
+  background-position-y: -48px * ($id - 1);
+}
+@mixin gear_half($id){
+  background-position-y: -24px * ($id - 1);
+}
+
+@for $i from 1 through 24 {
+  .gear-#{$i} {
+    @include gear($i);
+  }
+}
+@for $i from 1 through 24 {
+  .gear-half-#{$i} {
+    @include gear_half($i);
+  }
+}
+
+
+
+// main
 html, body {
   background: #F5F5F5;
   font-size: 12px;
+}
+
+button{
+  display: block;
+  border: none;
+  border-radius: 2px;
+  padding: 5px;
+
+  background-color: #FFFFFF;
+  color: #646464;
+  line-height: 120%;
+
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 }
 
 /* layout */ 
@@ -62,7 +111,7 @@ h1.page-title{
       $photo_size: 55px;
       width: $photo_size;
       height: $photo_size;
-      border-radius: 5px;
+      border-radius: 3px;
       margin-right: 12px;
       overflow: hidden;
       img {
@@ -99,18 +148,16 @@ h1.page-title{
         margin-top: 7px;
         .main-gear, .sub-gear{
           background-color: #000000;
-          border-radius: 3px;
+          border-radius: 2px;
           height: 28px;
           float: left;
           opacity: .75;
         }
         .main-gear{
           margin-right: 7px;
-          img{
+          i{
             margin: 2px;
-            height : 24px;
-            border-radius: 3px;
-            width : auto;
+            border-radius: 2px;
           }
         }
         .sub-gear{
@@ -122,11 +169,8 @@ h1.page-title{
             font-size: 8px;
             padding: 2px 2px 1px 2px;
           }
-          img{
-            display: block;
+          i{
             float: left;
-            height : 24px;
-            width : auto;
             margin-right: 2px;
             margin-top: 2px;
           }
@@ -138,7 +182,7 @@ h1.page-title{
 }
 header.filters {
   position: relative;
-  z-index: 10000;
+  z-index: 1000;
   background-color: #FFFFFF;
   padding: 10px;
   margin-bottom: 15px;
@@ -147,7 +191,7 @@ header.filters {
   select{
     display: block;
     float: left;
-    max-width: 150px;
+    max-width: 145px;
     height: 45px;
     font-size: 100%;
     color: $text_color;
@@ -162,13 +206,26 @@ header.filters {
     }
   }
   .to-gear-description{
-    display: block;
     float: left;
-    margin-top: 8px;
-    text-decoration: none;
-    line-height: 130%;
+    margin-top: 6px;
+    font-size: 10px;
   }
 }
 .sticky{
   z-index: 100;
 }
+
+//modal
+.ReactModal__Overlay{
+  z-index: 10000;
+}
+table.gear-descriptions{
+  td{
+    padding: 0px 3px 5px 0px;
+  }
+}
+.close-modal{
+  float: right;
+  color: #AAAAAA;
+}
+

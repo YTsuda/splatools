@@ -3,6 +3,10 @@ var SplatoolsAppDispatcher = require('../dispatcher/SplatoolsAppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
+var ID_INDEX = 0;
+var NAME_INDEX = 1;
+var POSITION_INDEX = 2;
+
 // id, name
 var _gears = [
     ["1","攻撃力アップ","16"],
@@ -32,7 +36,6 @@ var _gears = [
 ];
 
 var Gear = assign({}, EventEmitter.prototype, {
-    POSITION_INDEX: 2,
     /**
      * Get the entire collection of Gear.
      * @return {object}
@@ -41,7 +44,13 @@ var Gear = assign({}, EventEmitter.prototype, {
         var g = _gears.sort(function(a, b){
             return a[Gear.POSITION_INDEX] - b[Gear.POSITION_INDEX];
         });
-        return _gears;
+        return _gears.map(function(g){
+            return {
+                'id': g[ID_INDEX],
+                'name': g[NAME_INDEX],
+                'position': g[POSITION_INDEX]
+            };
+        });
     },
     getNameHash: function(){
         var hash = {};
@@ -49,6 +58,9 @@ var Gear = assign({}, EventEmitter.prototype, {
             hash[_gears[i][0]] = _gears[i][1];
         }
         return hash;
+    },
+    getImgById: function(id){
+        return "/images/gears/" + id + ".jpg";
     }
 });
 
