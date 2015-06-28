@@ -10,14 +10,6 @@ require('lazysizes');
 var injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
 
-// Material UI
-var mui = require('material-ui');
-var ThemeManager = new mui.Styles.ThemeManager();
-var DropDownMenu = mui.DropDownMenu;
-var Toolbar = mui.Toolbar;
-var ToolbarGroup = mui.ToolbarGroup;
-
-
 // stickey header
 var Sticky = require('react-sticky');
 
@@ -44,17 +36,6 @@ function getClothState() {
 }
 
 var SplatoolsApp = React.createClass({
-
-  // material design theme
-  childContextTypes: {
-    muiTheme: React.PropTypes.object
-  },
-  getChildContext: function() {
-    return {
-      muiTheme: ThemeManager.getCurrentTheme()
-    };
-  },
-
   // initial state
   getInitialState: function(){
     return getClothState();
@@ -138,6 +119,9 @@ var SplatoolsApp = React.createClass({
     part_options.push(this.state.parts.map(function(part){
       return <option value={part}>{Cloth.getPartLabel(part)}</option>;
     }));
+    var standardActions = [
+      { text: 'Okay' }
+    ];
 
     return (
       <div className='main'>
